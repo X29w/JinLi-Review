@@ -36,7 +36,7 @@ export class Content {
 
   @ManyToOne(() => ContentCategory, (category) => category.content)
   @JoinTable({
-    name: 'content_category', // 中间表名称
+    name: 'content_category',
   })
   categoryId: ContentCategory;
 }
