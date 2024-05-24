@@ -1,6 +1,10 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Content } from 'src/content/entities/content.entity';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToMany } from 'typeorm';
 
-export class KeyWord {
+@Entity({
+  name: 'keyword', // 表名
+})
+export class Keyword {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -23,4 +27,7 @@ export class KeyWord {
     comment: '创建时间',
   })
   createTime: Date;
+
+  @ManyToMany(() => Content, (content) => content.keywords)
+  contents: Content[];
 }

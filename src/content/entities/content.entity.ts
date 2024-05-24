@@ -1,8 +1,10 @@
 import { ContentCategory } from 'src/content-category/entities/content-category.entity';
+import { Keyword } from 'src/keywords/entities/keyword.entity';
 import {
   Column,
   Entity,
   JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -19,11 +21,25 @@ export class Content {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    comment: '标题',
+  })
   name: string;
 
-  @Column()
+  @Column({
+    comment: 'url',
+  })
   url: string;
+
+  @Column({
+    comment: '状态：发布-草稿-定时发布',
+  })
+  status: 'published' | 'draft' | 'scheduled';
+
+  @Column({
+    comment: '是否置顶',
+  })
+  isTop: boolean;
 
   @Column()
   createdAt: Date;
@@ -31,12 +47,15 @@ export class Content {
   @Column()
   updatedAt: Date;
 
-  @Column()
-  status: boolean;
-
   @ManyToOne(() => ContentCategory, (category) => category.content)
   @JoinTable({
     name: 'content_category',
   })
-  categoryId: ContentCategory;
+  categoryId: number;
+
+  @ManyToMany(() => Keyword, (keyword) => keyword.contents)
+  @JoinTable({
+    name: 'keyword',
+  })
+  keywords: string[];
 }
