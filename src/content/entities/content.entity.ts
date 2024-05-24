@@ -54,8 +54,5 @@ export class Content {
   categoryId: number;
 
   @ManyToMany(() => Keyword, (keyword) => keyword.contents)
-  @JoinTable({
-    name: 'keyword',
-  })
   keywords: string[];
 }
