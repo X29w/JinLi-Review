@@ -1,12 +1,15 @@
 import { ContentCategory } from 'src/content-category/entities/content-category.entity';
 import { Keyword } from 'src/keywords/entities/keyword.entity';
+import { ContentCategoryType, ContentStatusType } from 'src/types';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({
@@ -16,7 +19,7 @@ export class Content {
   @Column({
     comment: 'product是商品 article是文章',
   })
-  type: 'product' | 'article';
+  type: ContentCategoryType;
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -34,17 +37,18 @@ export class Content {
   @Column({
     comment: '状态：发布-草稿-定时发布',
   })
-  status: 'published' | 'draft' | 'scheduled';
+  status: ContentStatusType;
 
   @Column({
     comment: '是否置顶',
+    default: false,
   })
   isTop: boolean;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @ManyToOne(() => ContentCategory, (category) => category.content)
@@ -54,5 +58,5 @@ export class Content {
   categoryId: number;
 
   @ManyToMany(() => Keyword, (keyword) => keyword.contents)
-  keywords: string[];
+  keywords: number[];
 }

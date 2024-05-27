@@ -20,7 +20,7 @@ export class TransformInterceptor<T>
   ): Observable<Response<T>> {
     return next.handle().pipe(
       map((data) => ({
-        data,
+        data: data ?? null,
         success: true,
         message: 'success',
       })),

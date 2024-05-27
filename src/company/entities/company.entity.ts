@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'company',
@@ -6,6 +11,9 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class Company {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @Column()
   logo: string;

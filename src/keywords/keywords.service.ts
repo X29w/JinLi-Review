@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { CreateKeywordDto } from './dto/create-keyword.dto';
-import { UpdateKeywordDto } from './dto/update-keyword.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Keyword } from './entities/keyword.entity';
+import { Repository } from 'typeorm';
+import * as ExcelJS from 'exceljs';
 
 @Injectable()
 export class KeywordsService {
-  create(createKeywordDto: CreateKeywordDto) {
-    return 'This action adds a new keyword';
-  }
+  @InjectRepository(Keyword)
+  private readonly keywordRepository: Repository<Keyword>;
 
-  findAll() {
-    return `This action returns all keywords`;
+  //#region 导入创建关键词
+  async create(buffer: Buffer) {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(buffer);
+    const worksheet = workbook.getWorksheet(1);
+    const dataToSave = [];
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber > 1) {
+        const data = new Keyword();
+        data.keyword = row.getCell(1).value.toString();
+        data.yearCount = row.getCell(2).value.toString();
+        dataToSave.push(data);
+      }
+    });
+    await this.keywordRepository.save(dataToSave);
   }
+  //#endregion
 
-  findOne(id: number) {
-    return `This action returns a #${id} keyword`;
+  //#region 关键词列表
+  async findAll() {
+    try {
+      const keyword = await this.keywordRepository.find();
+      return keyword;
+    } catch (error) {}
   }
-
-  update(id: number, updateKeywordDto: UpdateKeywordDto) {
-    return `This action updates a #${id} keyword`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} keyword`;
-  }
+  //#endregion
 }

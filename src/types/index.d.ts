@@ -3,3 +3,7 @@ declare namespace NodeJS {
     RUNNING: string;
   }
 }
+
+export type ContentCategoryType = 'product' | 'article';
+
+export type ContentStatusType = 'published' | 'draft' | 'scheduled';

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsIP, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 
 export class CreateInquiryDto {
   @IsNotEmpty({
@@ -17,7 +17,24 @@ export class CreateInquiryDto {
   })
   message: string;
 
+  @IsNotEmpty({
+    message: '请提供站点语言',
+  })
+  language: string;
+
+  @IsNotEmpty({
+    message: '请提供ip',
+  })
+  @IsIP()
+  ip: string;
+
+  @IsNotEmpty({
+    message: '请提供访问终端',
+  })
+  terminal: string;
+
   company?: string;
 
+  @IsPhoneNumber('CN')
   phone?: string;
 }

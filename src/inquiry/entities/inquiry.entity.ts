@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'inquiry',
@@ -8,20 +14,36 @@ export class Inquiry {
   id: number;
 
   @Column()
-  origin: string;
-
-  @Column()
   terminal: string;
-
-  @Column()
-  country: string;
 
   @Column()
   language: string;
 
   @Column()
+  name: string;
+
+  @Column()
   email: string;
 
   @Column()
-  sendTime: Date;
+  message: string;
+
+  @Column()
+  ip: string;
+
+  @Column()
+  company: string;
+
+  @Column()
+  phone: string;
+
+  @CreateDateColumn({
+    comment: '创建日期',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    comment: '更新日期',
+  })
+  updatedAt: Date;
 }

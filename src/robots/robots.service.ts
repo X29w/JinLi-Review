@@ -9,27 +9,38 @@ import { CustomException } from 'src/common/exceptions/custom.exception.filter';
 @Injectable()
 export class RobotsService {
   @InjectRepository(Robot)
-  private readonly robotRepository: Repository<Robot>; // 注入Robot实体类的Repository
+  private readonly robotRepository: Repository<Robot>;
 
+  //#region 创建robot
   async create(createRobotDto: CreateRobotDto) {
+    const contents = await this.robotRepository.find();
+    if (contents.length > 1) {
+      throw new CustomException('REQUEST_URL_ERROR');
+    }
     try {
-      const contents = await this.robotRepository.find();
-      if (contents.length > 1) {
-        throw new CustomException('REQUEST_URL_ERROR');
-      }
       const newRobot = this.robotRepository.create(createRobotDto);
       await this.robotRepository.save(newRobot);
       return true;
-    } catch (error) {
-      return false;
-    }
+    } catch (error) {}
   }
+  //#endregion
 
-  findAll() {
-    return `This action returns all robots`;
+  //#region 获取robot
+  async findAll() {
+    try {
+      const robot = await this.robotRepository.find();
+      return robot?.[0];
+    } catch (error) {}
   }
+  //#endregion
 
-  update(id: number, updateRobotDto: UpdateRobotDto) {
-    return `This action updates a #${id} robot`;
+  //#region 更新robot
+  async update(updateRobotDto: UpdateRobotDto) {
+    try {
+      const robot = await this.robotRepository.find();
+      await this.robotRepository.update(robot?.[0].id, updateRobotDto);
+      return true;
+    } catch (error) {}
   }
+  //#endregion
 }

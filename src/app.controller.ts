@@ -13,4 +13,10 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('/error')
+  getHello2() {
+    // throw new CustomException('REQUEST_URL_ERROR');
+    return this.appService.getError();
+  }
 }

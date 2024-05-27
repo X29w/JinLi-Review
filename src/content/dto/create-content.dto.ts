@@ -1,21 +1,31 @@
-import { IsNotEmpty, IsUrl } from 'class-validator';
-import { TDKDto } from './tdk.dto';
+import { IsNotEmpty } from 'class-validator';
+import { ContentCategoryType, ContentStatusType } from 'src/types';
 
 export class CreateContentDto {
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: '请提供类别',
+  })
+  type: ContentCategoryType;
+
+  @IsNotEmpty({
+    message: '请输入名称',
+  })
   name: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: '请选择分类',
+  })
   categoryId: number;
 
-  @IsNotEmpty()
-  @IsUrl()
+  @IsNotEmpty({
+    message: '请输入链接',
+  })
   url: string;
 
-  @IsNotEmpty()
-  status: 'published' | 'draft' | 'scheduled';
+  @IsNotEmpty({
+    message: '请选择状态',
+  })
+  status: ContentStatusType;
 
-  keywords: string[];
-
-  tdk: TDKDto;
+  keywords?: number[];
 }
